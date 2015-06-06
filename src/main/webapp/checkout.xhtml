@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+<f:view renderKitId="PRIMEFACES_MOBILE" />
+<h:head>
+</h:head>
+<h:body>
+	<pm:page id="checkout">
+		<pm:content>
+			<p>Please verify your order.</p>
+			<p:dataList value="#{cartController.items}" var="i">
+				<h2>#{i.title}</h2>
+			 	<p>#{i.description}</p>
+			 	<p>#{i.price} UAH</p>
+			</p:dataList>
+			
+			<p:commandButton value="Buy"/> 
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>

@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile">
+<f:view renderKitId="PRIMEFACES_MOBILE" />
+<h:head>
+</h:head>
+<h:body>
+	<pm:page id="main">
+		<pm:header title="Hi there!"></pm:header>
+		<pm:content>
+			<h:form>
+				<p:dataList value="#{menu.pizzas}" var="p" >
+					<p:commandLink action="#{menu.select()}" type="button" oncomplete="PF('addPizza').show()" update="@form">
+	                	<f:param name="id" value="#{p.key}"/>
+			               <h:panelGroup>
+								<p:graphicImage name="#{p.value.title}.jpg" />
+								<h2>#{p.value.title}</h2>
+								<p>#{p.value.price} UAH</p>
+			               </h:panelGroup>
+					</p:commandLink>
+				</p:dataList>
+				<p:dialog widgetVar="addPizza" showEffect="pop">
+					<p:graphicImage name="#{constructor.selected.description}.jpg" width="150"/>
+					<h2>#{menu.selected.title}</h2>
+					<p>#{menu.selected.description}</p>
+					<p>#{menu.selected.price} UAH</p>
+					<p:commandButton value="Add" action="#{menu.add}" oncomplete="PF('addPizza').hide()"/>
+				</p:dialog>
+			</h:form>
+			
+			<p:button value="Create own pizza" outcome="pm:pizzaConstructor" />
+			<p:commandButton value="Proceed to checkout" action="checkout" />
+		</pm:content>
+	</pm:page>
+	<pm:page id="pizzaConstructor">
+		<pm:header title="Choose toppings"></pm:header>
+		<pm:content>
+			<h:form>
+				<p:dataList value="#{constructor.toppings}" var="topping" >
+					<p:commandLink action="#{constructor.select()}" type="button" oncomplete="PF('addTopping').show()" update="@form">
+	                	<f:param name="id" value="#{topping.id}"/>
+			               <h:panelGroup>
+								<p:graphicImage name="#{topping.description}.jpg" />
+								<h2>#{topping.description}</h2>
+								<p>#{topping.price} UAH</p>
+			               </h:panelGroup>
+					</p:commandLink>
+				</p:dataList>
+				
+				<p:button value="Verify pizza" outcome="pm:verify" />
+
+				<p:dialog widgetVar="addTopping" showEffect="pop">
+					<p:graphicImage name="#{constructor.selected.description}.jpg" width="150"/>
+					<h2>#{constructor.selected.description}</h2>
+					<p>#{constructor.selected.price} UAH</p>
+					<p:commandButton value="Add" action="#{constructor.add}" oncomplete="PF('addTopping').hide()"/>
+				</p:dialog>
+			</h:form>
+		</pm:content>
+	</pm:page>
+	<pm:page id="verify" lazy="true">
+		<pm:content>
+		<h:form>
+			<p>Please verify your order.</p>
+			<h2>#{constructor.pizza.description}</h2>
+			<p>#{constructor.pizza.price} UAH</p>
+			<p:commandButton value="Add and proceed" action="checkout" actionListener="#{constructor.submit}"/>			
+		</h:form>
+		</pm:content>
+	</pm:page>
+</h:body>
+</html>
